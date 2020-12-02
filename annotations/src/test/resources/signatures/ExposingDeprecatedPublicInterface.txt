@@ -1,2 +1,0 @@
-org.neo4j.annotations.api.ExposingDeprecatedPublicInterface public abstract interface
-org.neo4j.annotations.api.ExposingDeprecatedPublicInterface::i() org.neo4j.annotations.api.NotMarkedNestedClass public abstract
