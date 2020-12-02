@@ -128,7 +128,6 @@
   </properties>
 
   <modules>
-    <module>annotations</module>
     <module>build-resources</module>
     <module>community</module>
     <module>packaging</module>
@@ -178,96 +177,6 @@
     <!-- Plugin definitions -->
     <pluginManagement>
       <plugins>
-
-        <!-- Here we define our public API -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.1.1</version>
-          <executions>
-            <execution>
-              <id>generate-javadocs</id>
-              <goals>
-                <goal>javadoc-no-fork</goal>
-              </goals>
-              <phase>prepare-package</phase>
-            </execution>
-          </executions>
-          <configuration>
-            <additionalJOptions>
-              <additionalJOption>-J--add-exports=jdk.javadoc/jdk.javadoc.internal.tool=ALL-UNNAMED</additionalJOption>
-              <additionalJOption>--allow-script-in-comments</additionalJOption>
-            </additionalJOptions>
-            <doclet>org.neo4j.annotations.api.PublicApiDoclet</doclet>
-            <docletArtifact>
-              <groupId>org.neo4j</groupId>
-              <artifactId>annotations</artifactId>
-              <version>${project.version}</version>
-            </docletArtifact>
-
-            <header>Neo4j</header>
-            <doctitle>Neo4j ${project.version} API</doctitle>
-            <windowtitle>Neo4j ${project.version} API</windowtitle>
-            <show>public</show>
-
-            <quiet>true</quiet>
-            <reportOutputDirectory>${project.build.directory}/apidocs</reportOutputDirectory>
-            <links>
-              <link>https://docs.oracle.com/en/java/javase/${maven.compiler.source}/docs/api</link>
-            </links>
-
-            <!-- Defines grouping for overview -->
-            <groups>
-              <group>
-                <title>Graph database</title>
-                <packages>org.neo4j.graphdb:org.neo4j.dbms.api</packages>
-              </group>
-              <group>
-                <title>Graph algorithms</title>
-                <packages>org.neo4j.graphalgo:org.neo4j.graphalgo.*</packages>
-              </group>
-              <group>
-                <title>Logging</title>
-                <packages>org.neo4j.logging:org.neo4j.logging.*</packages>
-              </group>
-              <group>
-                <title>Import</title>
-                <packages>org.neo4j.batchinsert</packages>
-              </group>
-              <group>
-                <title>Procedures</title>
-                <packages>org.neo4j.procedure</packages>
-              </group>
-              <group>
-                <title>Server Plugin API</title>
-                <packages>org.neo4j.server:org.neo4j.server.*</packages>
-              </group>
-              <group>
-                <title>Test Harness</title>
-                <packages>org.neo4j.harness.junit*</packages>
-              </group>
-            </groups>
-
-            <!-- Include the following packages... (yes, has to be one line) -->
-            <subpackages>
-              org.neo4j.graphalgo:org.neo4j.graphdb:org.neo4j.dbms.api:org.neo4j.server.helpers:org.neo4j.server.rest.repr:org.neo4j.server.rest.web:org.neo4j.batchinsert:org.neo4j.logging:org.neo4j.procedure:org.neo4j.harness.junit:org.neo4j.configuration
-            </subpackages>
-            <!-- ...unless the package contains -->
-            <excludePackageNames>
-              *.impl.*:*.internal.*
-            </excludePackageNames>
-            <bottom>
-              <![CDATA[
-                <script>
-                  if (typeof useModuleDirectories !== 'undefined') {
-                    useModuleDirectories = false;
-                  }
-                </script>
-              ]]>
-            </bottom>
-          </configuration>
-        </plugin>
-
         <!-- Testing setup -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -757,29 +666,20 @@
         </executions>
       </plugin>
 
-      <!-- Enable Public API checks -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>properties-maven-plugin</artifactId>
-        <version>1.0.0</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>set-system-properties</goal>
-            </goals>
-            <configuration>
-              <properties>
-                <property>
-                  <name>enablePublicApiSignatureCheck</name>
-                  <value>true</value>
-                </property>
-              </properties>
-            </configuration>
-          </execution>
-        </executions>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.2.0</version>
+        <configuration>
+        <additionalJOptions>
+            <additionalJOption>--ignore-source-errors</additionalJOption>
+        </additionalJOptions>
+        <show>private</show>
+          <doclint>none</doclint>
+        </configuration>
       </plugin>
 
-    </plugins>
+          </plugins>
   </build>
 
   <profiles>
